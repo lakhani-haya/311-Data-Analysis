@@ -1,0 +1,9 @@
+CREATE OR REPLACE VIEW `city-311-analytics.reporting.kpi_top_categories` AS
+SELECT
+  c.category_code,
+  COUNT(*) AS total_requests
+FROM `city-311-analytics.clean_data.service_requests` sr
+JOIN `city-311-analytics.clean_data.categories` c
+  ON sr.category_id = c.category_id
+GROUP BY c.category_code
+ORDER BY total_requests DESC;
