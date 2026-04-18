@@ -1,9 +1,0 @@
-CREATE OR REPLACE TABLE `city-311-analytics.clean_data.categories` AS
-SELECT DISTINCT
-  CASE
-    WHEN UPPER(category_code) IN ('POT', 'POTHOLE') THEN 'POT'
-    WHEN UPPER(category_code) IN ('GRAF', 'GRAFFITI') THEN 'GRAF'
-    WHEN UPPER(category_code) IN ('LIGHT', 'STRL') THEN 'STRL'
-    ELSE UPPER(category_code)
-  END AS category_code
-FROM `city-311-analytics.raw_data.service_requests`;
