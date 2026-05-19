@@ -1,0 +1,9 @@
+SELECT
+  c.category_name,
+  COUNT(*) AS total_requests
+FROM `city-311-analytics.raw_data.service_requests` sr
+JOIN `city-311-analytics.raw_data.categories` c
+  ON sr.category_code = c.category_code
+GROUP BY c.category_name
+ORDER BY total_requests DESC
+LIMIT 10;
