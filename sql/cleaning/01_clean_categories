@@ -1,0 +1,12 @@
+-- Standardize category codes to one short canonical code per category
+
+CREATE OR REPLACE TABLE `city-311-analytics.clean_data.categories` AS
+SELECT DISTINCT
+  CASE
+    WHEN category_code IN ('POT', 'POTHOLE') THEN 'POT'
+    WHEN category_code IN ('GRAF', 'GRAFFITI') THEN 'GRAF'
+    WHEN category_code IN ('LIGHT', 'STRL') THEN 'STRL'
+    ELSE category_code
+  END AS category_code,
+  category_name
+FROM `city-311-analytics.raw_data.categories`;
