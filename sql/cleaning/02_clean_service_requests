@@ -1,0 +1,21 @@
+-- Remove duplicate request_ids and standardize category codes
+
+CREATE OR REPLACE TABLE `city-311-analytics.clean_data.service_requests` AS
+SELECT * EXCEPT(rn)
+FROM (
+  SELECT
+    sr.* REPLACE(
+      CASE
+        WHEN sr.category_code IN ('POT', 'POTHOLE') THEN 'POT'
+        WHEN sr.category_code IN ('GRAF', 'GRAFFITI') THEN 'GRAF'
+        WHEN sr.category_code IN ('LIGHT', 'STRL') THEN 'STRL'
+        ELSE sr.category_code
+      END AS category_code
+    ),
+    ROW_NUMBER() OVER (
+      PARTITION BY request_id
+      ORDER BY created_at DESC
+    ) AS rn
+  FROM `city-311-analytics.raw_data.service_requests` sr
+)
+WHERE rn = 1;
