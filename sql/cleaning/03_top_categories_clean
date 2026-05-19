@@ -1,0 +1,14 @@
+-- Analyze citywide request volume by category using cleaned and standardized data
+
+SELECT
+  c.category_name,
+  COUNT(*) AS total_requests,
+  ROUND(
+    COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (),
+    2
+  ) AS pct_of_total_requests
+FROM `city-311-analytics.clean_data.service_requests` sr
+JOIN `city-311-analytics.clean_data.categories` c
+  ON sr.category_code = c.category_code
+GROUP BY c.category_name
+ORDER BY total_requests DESC;
